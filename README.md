@@ -1,5 +1,5 @@
 # 🧠 AssistAR Live – Remote Industrial Guidance in Augmented Reality  
-Vue.js + Three.js + AR.js + MQTT + Net.Core + 
+Vue.js + Three.js + AR.js + MQTT + Net.Core + ASP.NET Core
 
 AssistAR Live is a lightweight, real-time **remote support platform** designed for industrial environments where operators need expert assistance to solve robotic or mechanical issues.  
 It enables technicians on the shop floor to stream their camera view via a mobile AR interface, while remote experts can overlay visual guidance (arrows, zones, annotations) aligned with the real-world context.
