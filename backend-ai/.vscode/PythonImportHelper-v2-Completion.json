@@ -1,0 +1,111 @@
+[
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "YOLO",
+        "importPath": "ultralytics",
+        "description": "ultralytics",
+        "isExtraImport": true,
+        "detail": "ultralytics",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "io",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "io",
+        "description": "io",
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "detect_bp",
+        "importPath": "routes.detect",
+        "description": "routes.detect",
+        "isExtraImport": true,
+        "detail": "routes.detect",
+        "documentation": {}
+    },
+    {
+        "label": "detect",
+        "kind": 2,
+        "importPath": "routes.detect",
+        "description": "routes.detect",
+        "peekOfCode": "def detect():\n    if 'image' not in request.files:\n        return jsonify({'error': 'No image provided'}), 400\n    image_file = request.files['image']\n    image = Image.open(image_file.stream)\n    results = model.predict(image)\n    detections = []\n    for r in results:\n        for box in r.boxes:\n            label = r.names[int(box.cls)]",
+        "detail": "routes.detect",
+        "documentation": {}
+    },
+    {
+        "label": "detect_bp",
+        "kind": 5,
+        "importPath": "routes.detect",
+        "description": "routes.detect",
+        "peekOfCode": "detect_bp = Blueprint('detect', __name__)\nmodel = YOLO('yolov8n.pt')  # Replace with actual path if needed\n@detect_bp.route('/detect', methods=['POST'])\ndef detect():\n    if 'image' not in request.files:\n        return jsonify({'error': 'No image provided'}), 400\n    image_file = request.files['image']\n    image = Image.open(image_file.stream)\n    results = model.predict(image)\n    detections = []",
+        "detail": "routes.detect",
+        "documentation": {}
+    },
+    {
+        "label": "model",
+        "kind": 5,
+        "importPath": "routes.detect",
+        "description": "routes.detect",
+        "peekOfCode": "model = YOLO('yolov8n.pt')  # Replace with actual path if needed\n@detect_bp.route('/detect', methods=['POST'])\ndef detect():\n    if 'image' not in request.files:\n        return jsonify({'error': 'No image provided'}), 400\n    image_file = request.files['image']\n    image = Image.open(image_file.stream)\n    results = model.predict(image)\n    detections = []\n    for r in results:",
+        "detail": "routes.detect",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\napp.register_blueprint(detect_bp)\nif __name__ == \"__main__\":\n    app.run(host=\"0.0.0.0\", port=5000)",
+        "detail": "app",
+        "documentation": {}
+    }
+]
