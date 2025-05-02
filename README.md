@@ -32,40 +32,6 @@ Instead, it provides:
 - 🧠 AnnotationBridge — Optional Node.js or ASP.NET Core relay to log sessions, events, and diagnostics
 - 📚 SessionLogger — Saves annotation and help session data for future review
 
-## 📦 Project Structure
-
-assist-ar-live/
-├── mobile-client/              → Vue 3 + Three.js + AR.js (Capacitor app)
-│   └── components/ARClient.vue, AnnotationOverlay.vue
-├── expert-dashboard/          → Web app (Vue.js) for remote guidance
-│   └── components/AnnotationPanel.vue, VideoFeedViewer.vue
-├── shared-mqtt/               → MQTT Topics, interfaces
-│   └── topics.ts, annotations.ts
-├── backend-api/               → Optional backend (ASP.NET Core or Node.js)
-│   └── AnnotationController.cs or index.ts
-├── mqtt-broker/               → Mosquitto config + startup
-└── docs/                      → Technical architecture, mockups, use cases
-
-## 🚀 MVP Implementation Plan (4 Weeks)
-
-### Week 1
-- [x] Setup Vue + Capacitor mobile client
-- [x] Integrate AR.js with camera + marker detection
-- [x] Establish MQTT communication (Mosquitto)
-
-### Week 2
-- [x] Implement 3D annotation overlay (arrows, zones)
-- [x] Build expert dashboard for drawing/annotation
-- [x] Sync AR overlay with remote actions via MQTT
-
-### Week 3
-- [ ] Add video stream (WebRTC) to expert UI
-- [ ] Save annotations and session logs in backend
-
-### Week 4
-- [ ] Optimize UI/UX for industrial settings
-- [ ] Package APK for Android, test with real scenario
-
 ## 📚 Example Interaction Flow
 
 1. Technician opens **AssistAR mobile app** and scans the robot with AR.js
