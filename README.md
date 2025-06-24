@@ -1,4 +1,4 @@
-# 🧠 Pii XR– Remote Industrial Guidance in Augmented Reality  
+# Pii XR– Remote Industrial Guidance in Augmented Reality  
 Vue.js + Three.js + AR.js + MQTT + Net.Core + ASP.NET Core
 
 Pii XR is a lightweight, real-time **remote support platform** designed for industrial environments where operators need expert assistance to solve robotic or mechanical issues.  
