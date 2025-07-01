@@ -1,7 +1,7 @@
-# 🧠 ClarifAI– Remote Industrial Guidance in Augmented Reality  
+# Pii XR– Remote Industrial Guidance in Augmented Reality  
 Vue.js + Three.js + AR.js + MQTT + Net.Core + ASP.NET Core
 
-ClarifAI XR is a lightweight, real-time **remote support platform** designed for industrial environments where operators need expert assistance to solve robotic or mechanical issues.  
+Pii XR is a lightweight, real-time **remote support platform** designed for industrial environments where operators need expert assistance to solve robotic or mechanical issues.  
 It enables technicians on the shop floor to stream their camera view via a mobile AR interface, while remote experts can overlay visual guidance (arrows, zones, annotations) aligned with the real-world context.
 
 ## 🎯 Project Scope (Real-World + Lightweight)
@@ -34,7 +34,7 @@ Instead, it provides:
 
 ## 📚 Example Interaction Flow
 
-1. Technician opens **AssistAR mobile app** and scans the robot with AR.js
+1. Technician opens **Pii XR mobile app** and scans the robot with AR.js
 2. Remote expert opens dashboard and sees the video stream
 3. Expert clicks “Draw arrow” pointing to a faulty screw
 4. A message is sent via MQTT:
