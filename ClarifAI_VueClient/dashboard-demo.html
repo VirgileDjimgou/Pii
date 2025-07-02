@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClarifAI Mobile Dashboard Demo</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        .demo-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .demo-screen {
+            height: 600px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600"><defs><linearGradient id="nav" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23667eea"/><stop offset="100%" stop-color="%23764ba2"/></linearGradient><linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="%23f8fafc"/><stop offset="100%" stop-color="%23e2e8f0"/></linearGradient></defs><rect width="400" height="600" fill="url(%23bg)"/><rect width="400" height="80" fill="url(%23nav)"/><circle cx="80" cy="40" r="10" fill="white" opacity="0.7"/><text x="80" y="55" text-anchor="middle" fill="white" font-size="10">Home</text><circle cx="200" cy="40" r="8" fill="white" opacity="0.5"/><text x="200" y="55" text-anchor="middle" fill="white" font-size="10">History</text><circle cx="320" cy="40" r="8" fill="white" opacity="0.5"/><text x="320" y="55" text-anchor="middle" fill="white" font-size="10">Settings</text><circle cx="200" cy="250" r="80" fill="%234299e1"/><text x="200" y="255" text-anchor="middle" fill="white" font-size="14">Start Detection</text><rect x="50" y="380" width="100" height="60" rx="15" fill="white"/><text x="100" y="400" text-anchor="middle" fill="%232d3748" font-size="12">247</text><text x="100" y="420" text-anchor="middle" fill="%2364748b" font-size="10">Total</text><rect x="150" y="380" width="100" height="60" rx="15" fill="white"/><text x="200" y="400" text-anchor="middle" fill="%232d3748" font-size="12">12</text><text x="200" y="420" text-anchor="middle" fill="%2364748b" font-size="10">Today</text><rect x="250" y="380" width="100" height="60" rx="15" fill="white"/><text x="300" y="400" text-anchor="middle" fill="%232d3748" font-size="12">94%</text><text x="300" y="420" text-anchor="middle" fill="%2364748b" font-size="10">Accuracy</text></svg>') center/cover;
+        }
+        .demo-info {
+            padding: 20px;
+            text-align: center;
+        }
+        .demo-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0 0 10px 0;
+        }
+        .demo-description {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .feature-list {
+            margin: 20px 0;
+            text-align: left;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 14px;
+            color: #4a5568;
+        }
+        .feature-item::before {
+            content: "✓";
+            color: #48bb78;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-screen"></div>
+        <div class="demo-info">
+            <h2 class="demo-title">ClarifAI Mobile Dashboard</h2>
+            <p class="demo-description">
+                A clean and minimal mobile interface inspired by Shazam's design, 
+                featuring AI-powered object detection with modern Vue 3 components.
+            </p>
+            <div class="feature-list">
+                <div class="feature-item">Three-page navigation (Home, History, Settings)</div>
+                <div class="feature-item">Fixed top navigation with smooth animations</div>
+                <div class="feature-item">Modern blue-toned theme with gradients</div>
+                <div class="feature-item">Touch-friendly UI elements for mobile</div>
+                <div class="feature-item">Integrates existing camera components</div>
+                <div class="feature-item">Responsive design for all screen sizes</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
