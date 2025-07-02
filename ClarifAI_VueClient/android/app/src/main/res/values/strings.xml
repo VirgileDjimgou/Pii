@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ClarifAI</string>
+    <string name="title_activity_main">ClarifAI</string>
+    <string name="package_name">com.clarifai.vueclient</string>
+    <string name="custom_url_scheme">com.clarifai.vueclient</string>
+</resources>

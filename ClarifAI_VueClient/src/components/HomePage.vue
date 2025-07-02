@@ -27,6 +27,23 @@
       </button>
     </div>
 
+    <!-- Native camera controls (only shown in native app) -->
+    <div class="native-controls" v-if="isNativeApp && !isDetecting">
+      <div class="native-buttons">
+        <button class="native-button camera-button" @click="takeNativePhoto">
+          <i class="fas fa-camera"></i>
+          <span>Take Photo</span>
+        </button>
+        <button class="native-button gallery-button" @click="selectFromGallery">
+          <i class="fas fa-images"></i>
+          <span>From Gallery</span>
+        </button>
+      </div>
+      <p class="native-description">
+        Use native camera or select from gallery for enhanced detection
+      </p>
+    </div>
+
     <!-- Quick stats section -->
     <div class="stats-section" v-if="!isDetecting">
       <div class="stat-card">
@@ -49,14 +66,22 @@
 import { ref } from 'vue'
 import CameraPreview from './CameraPreview.vue'
 import DetectionOverlay from './DetectionOverlay.vue'
+import { CapacitorCameraService } from '../services/CapacitorCameraService'
 
 // Track detection state
 const isDetecting = ref(false)
+const isNativeApp = ref(false)
+
+// Enhanced camera service that supports both web and native
+const cameraService = new CapacitorCameraService()
 
 // Mock statistics data - in a real app this would come from a store or API
 const totalDetections = ref(247)
 const todayDetections = ref(12)
 const accuracy = ref(94)
+
+// Check if we're running in a native environment
+isNativeApp.value = cameraService.isNativeEnvironment()
 
 // Start the detection process using existing camera components
 const startDetection = () => {
@@ -68,6 +93,33 @@ const startDetection = () => {
 const stopDetection = () => {
   isDetecting.value = false
   // Camera cleanup is handled by CameraPreview component's onUnmounted
+}
+
+// Native camera photo capture - only available in native app
+const takeNativePhoto = async () => {
+  try {
+    const photoBase64 = await cameraService.takePhoto()
+    if (photoBase64) {
+      console.log('Photo captured successfully:', photoBase64.substring(0, 50) + '...')
+      // In a real app, this would trigger AI detection on the photo
+      // and add the result to history
+    }
+  } catch (error) {
+    console.error('Error taking photo:', error)
+  }
+}
+
+// Select photo from gallery - only available in native app
+const selectFromGallery = async () => {
+  try {
+    const photoBase64 = await cameraService.selectFromGallery()
+    if (photoBase64) {
+      console.log('Photo selected successfully:', photoBase64.substring(0, 50) + '...')
+      // In a real app, this would trigger AI detection on the selected photo
+    }
+  } catch (error) {
+    console.error('Error selecting photo:', error)
+  }
 }
 </script>
 
@@ -209,6 +261,65 @@ const stopDetection = () => {
   letter-spacing: 0.5px;
 }
 
+/* Native camera controls styling */
+.native-controls {
+  margin: 30px 0;
+  text-align: center;
+}
+
+.native-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.native-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  border: 2px solid #e2e8f0;
+  padding: 20px 25px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  color: #4a5568;
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 120px;
+}
+
+.native-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  border-color: #4299e1;
+  color: #4299e1;
+}
+
+.native-button i {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.camera-button:hover {
+  border-color: #48bb78;
+  color: #48bb78;
+}
+
+.gallery-button:hover {
+  border-color: #ed8936;
+  color: #ed8936;
+}
+
+.native-description {
+  color: #64748b;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+}
+
 /* Responsive design for mobile devices */
 @media (max-width: 480px) {
   .home-page {
@@ -238,6 +349,16 @@ const stopDetection = () => {
   
   .stat-number {
     font-size: 24px;
+  }
+  
+  .native-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .native-button {
+    min-width: auto;
+    padding: 18px 20px;
   }
 }
 </style>
