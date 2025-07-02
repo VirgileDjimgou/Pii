@@ -1,4 +1,4 @@
-# Capacitor Integration for ClarifAI Vue Client
+# Capacitor Integration for PiiXr Vue Client
 
 ## Overview
 This project has been successfully integrated with Capacitor to enable native Android APK generation while maintaining all existing web functionality. The integration allows the Vue 3 + TypeScript dashboard to run natively on Android devices with enhanced camera capabilities.
@@ -48,8 +48,8 @@ This project has been successfully integrated with Capacitor to enable native An
 ### Capacitor Config (`capacitor.config.ts`)
 ```typescript
 {
-  appId: 'com.clarifai.vueclient',
-  appName: 'ClarifAI',
+  appId: 'com.piixr.vueclient',
+  appName: 'PiiXr',
   webDir: 'dist',
   server: {
     androidScheme: 'https'

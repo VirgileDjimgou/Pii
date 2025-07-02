@@ -1,7 +1,7 @@
 # Mobile Dashboard Components
 
 ## Overview
-This implementation adds a clean and minimal mobile dashboard interface inspired by the Shazam app design, built with Vue 3, Vite, and TypeScript. The dashboard preserves all existing functionality while adding a modern, mobile-first interface.
+This implementation adds a clean and minimal mobile dashboard interface , built with Vue 3, Vite, and TypeScript. The dashboard preserves all existing functionality while adding a modern, mobile-first interface.
 
 ## Features
 - **Three-page navigation**: Home, History, and Settings

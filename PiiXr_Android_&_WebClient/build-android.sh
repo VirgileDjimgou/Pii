@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build script for ClarifAI Vue client with Capacitor integration
-echo "Building ClarifAI Vue client for Android..."
+echo "Building PiiXr Vue client for Android..."
 
 # Step 1: Build the Vue application
 echo "Step 1: Building Vue application..."
