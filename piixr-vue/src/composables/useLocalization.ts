@@ -19,9 +19,16 @@ const translations: Record<AvailableLanguage, Translations> = {
     buttons: {
       scanQR: 'Scan QR Code',
       createTutorial: 'Make a video guide',
+      settings: 'Settings',
       startNow: 'Start now',
       rateUs: 'Rate us',
       giveFeedback: 'Give feedback',
+      joinSession: 'Join Session',
+      recentSessions: 'Recent Sessions',
+      fileTransfer: 'Transfer Files',
+      scheduleMeeting: 'Schedule Meeting',
+      contactSupport: 'Contact Support',
+      directConnect: 'Direct Connect',
     },
     settings: {
       title: 'Settings',
@@ -52,9 +59,16 @@ const translations: Record<AvailableLanguage, Translations> = {
     buttons: {
       scanQR: 'QR-Code erfassen',
       createTutorial: 'Erstellen Sie eine Videoanleitung',
+      settings: 'Einstellungen',
       startNow: 'Jetzt loslegen',
       rateUs: 'Bewerten Sie uns',
       giveFeedback: 'Feedback geben',
+      joinSession: 'Sitzung beitreten',
+      recentSessions: 'Letzte Sitzungen',
+      fileTransfer: 'Dateien übertragen',
+      scheduleMeeting: 'Meeting planen',
+      contactSupport: 'Support kontaktieren',
+      directConnect: 'Direkt verbinden',
     },
     settings: {
       title: 'Einstellungen',
