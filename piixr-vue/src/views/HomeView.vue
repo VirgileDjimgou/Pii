@@ -5,6 +5,15 @@ import { useSessionManager } from '../composables/useSessionManager';
 import { useAppStore } from '../stores/app';
 import { useLocalization } from '../composables/useLocalization';
 import ARPreviewThree from '../components/visualizations/ARPreviewThree.vue';
+import ScrollableButtonPanel from '../components/ui/ScrollableButtonPanel.vue';
+
+// Define button interface for all types of buttons
+interface Button {
+  id: string;
+  label: string;
+  icon: string;
+  action: () => void;
+}
 
 const router = useRouter();
 const { sessionId, copySessionId } = useSessionManager();
@@ -84,6 +93,79 @@ const directConnect = () => {
   // In a real app, this would prompt for a session ID to connect to
 };
 
+// Define all button data for the quick access panel
+const quickAccessButtons = ref<Button[]>([
+  {
+    id: 'scan-qr',
+    label: 'Scan QR',
+    icon: 'qr-icon',
+    action: handleScanQR
+  },
+  {
+    id: 'join-session',
+    label: 'Join Session',
+    icon: 'connect-icon',
+    action: joinSession
+  },
+  {
+    id: 'direct-connect',
+    label: 'Direct Connect',
+    icon: 'direct-icon',
+    action: directConnect
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    icon: 'settings-icon',
+    action: openSettings
+  },
+  {
+    id: 'create-tutorial',
+    label: 'Create Tutorial',
+    icon: 'video-icon',
+    action: createTutorial
+  },
+  {
+    id: 'recent-sessions',
+    label: 'Recent Sessions',
+    icon: 'history-icon',
+    action: viewRecentSessions
+  },
+  {
+    id: 'file-transfer',
+    label: 'Transfer Files',
+    icon: 'file-icon',
+    action: openFileTransfer
+  },
+  {
+    id: 'schedule-meeting',
+    label: 'Schedule Meeting',
+    icon: 'calendar-icon',
+    action: scheduleMeeting
+  },
+  {
+    id: 'contact-support',
+    label: 'Contact Support',
+    icon: 'help-icon',
+    action: contactSupport
+  }
+]);
+
+// Track currently hovered button in the quick access panel
+const currentHoveredButton = ref<Button | null>(null);
+
+// Handle quick access button click
+const handleQuickAccessButtonClick = (button: Button) => {
+  if (button && button.action) {
+    button.action();
+  }
+};
+
+// Handle quick access button hover
+const handleQuickAccessButtonHover = (button: Button) => {
+  currentHoveredButton.value = button;
+};
+
 onMounted(() => {
   // Initialize app settings
   appStore.initSettings();
@@ -125,6 +207,19 @@ onMounted(() => {
       </div>
 
       <div class="actions">
+        <!-- Quick Access Scrollable Panel -->
+        <div class="quick-access-panel">
+          <h3 class="section-title">Quick Access</h3>
+          <ScrollableButtonPanel 
+            :buttons="quickAccessButtons" 
+            @button-click="handleQuickAccessButtonClick" 
+            @button-hover="handleQuickAccessButtonHover"
+          />
+          <div v-if="currentHoveredButton" class="hovered-button-info">
+            {{ translate(`buttons.${currentHoveredButton.id.replace(/-/g, '')}`) }}
+          </div>
+        </div>
+        
         <!-- Primary Actions Section -->
         <div class="primary-actions">
           <button class="primary-button qr-scan-button" @click="handleScanQR">
@@ -363,6 +458,28 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.quick-access-panel {
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hovered-button-info {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  color: #be4df3;
+  transition: all 0.2s ease;
 }
 
 .primary-actions, .secondary-actions, .utility-actions {
