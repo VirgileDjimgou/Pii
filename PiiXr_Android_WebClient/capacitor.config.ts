@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.clarifai.vueclient',
-  appName: 'ClarifAI',
+  appId: 'com.pii.vueclient',
+  appName: 'Pii',
   webDir: 'dist',
   server: {
     androidScheme: 'https'

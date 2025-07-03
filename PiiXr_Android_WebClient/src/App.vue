@@ -18,6 +18,8 @@ const toggleView = () => {
   <MobileDashboard v-if="showDashboard" />
   
   <!-- Original application content (preserved for compatibility) -->
+  <!-- this section will not be rendered when the dashboard is show -->
+
   <div v-else id="app">
     <div class="position-relative">
       <CameraPreview />

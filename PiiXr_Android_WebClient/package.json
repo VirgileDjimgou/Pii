@@ -1,11 +1,13 @@
 {
-  "name": "clarifai-vueclient",
+  "name": "pii-vueclient",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build --mode production",
+    "build:with-check": "vue-tsc -b && vite build",
+    "type-check": "vue-tsc -b --noEmit",
     "preview": "vite preview",
     "build:android": "npm run build && npx cap copy android",
     "open:android": "npx cap open android",
