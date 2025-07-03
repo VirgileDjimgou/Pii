@@ -67,7 +67,7 @@ button:focus-visible {
   --bg-color: #121212;
   --text-color: rgba(255, 255, 255, 0.87);
   --surface-color: #1e1e1e;
-  --primary-color: #3b82f6;
+  --primary-color: #be4df3;
   --secondary-color: #6b7280;
   --error-color: #ef4444;
   --success-color: #22c55e;

@@ -385,7 +385,7 @@ const saveSettings = () => {
 }
 
 input:checked + .toggle-slider {
-  background-color: #2196F3;
+  background-color: #be4df3;
 }
 
 input:checked + .toggle-slider:before {

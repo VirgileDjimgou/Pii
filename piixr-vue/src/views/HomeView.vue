@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useSessionManager } from '../composables/useSessionManager';
 import { useAppStore } from '../stores/app';
 import { useLocalization } from '../composables/useLocalization';
+import ARPreviewThree from '../components/visualizations/ARPreviewThree.vue';
 
 const router = useRouter();
 const { sessionId, copySessionId } = useSessionManager();
@@ -72,14 +73,8 @@ onMounted(() => {
       <div class="ar-preview-container">
         <div class="ar-preview">
           <div class="phone-mockup">
-            <!-- AR Preview Visualization -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200" class="ar-preview-svg">
-              <rect x="20" y="40" width="60" height="120" rx="10" fill="#1a56db" />
-              <rect x="25" y="45" width="50" height="110" rx="5" fill="#f8fafc" />
-              <circle cx="50" cy="100" r="15" fill="#3b82f6" stroke="#fff" stroke-width="2" />
-              <path d="M50 125 L50 150" stroke="#3b82f6" stroke-width="5" />
-              <path d="M40 140 L50 150 L60 140" fill="none" stroke="#3b82f6" stroke-width="5" />
-            </svg>
+            <!-- Interactive 3D AR Preview Visualization -->
+            <ARPreviewThree />
           </div>
         </div>
       </div>
@@ -185,6 +180,7 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+  perspective: 1000px; /* Adds depth to the 3D visualization */
 }
 
 .ar-preview {
@@ -193,11 +189,15 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  transform-style: preserve-3d;
 }
 
 .phone-mockup {
-  width: 80%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .ar-preview-svg {
@@ -271,7 +271,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  background-color: #2563eb;
+  background-color: #be4df3;
   color: white;
   padding: 1rem;
   border-radius: 8px;
@@ -287,7 +287,7 @@ onMounted(() => {
   align-items: center;
   gap: 0.5rem;
   background-color: transparent;
-  color: #3b82f6;
+  color: #be4df3;
   padding: 1rem;
   border-radius: 8px;
   border: none;

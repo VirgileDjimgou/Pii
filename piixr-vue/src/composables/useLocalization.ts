@@ -12,13 +12,13 @@ export interface Translations {
 const translations: Record<AvailableLanguage, Translations> = {
   en: {
     app: {
-      title: 'Assist AR',
+      title: 'Pii AR',
       ready: 'Ready to connect (secure connection)',
       lightRequired: 'More light required',
     },
     buttons: {
       scanQR: 'Scan QR Code',
-      createTutorial: 'Create video tutorial',
+      createTutorial: 'Make a video guide',
       startNow: 'Start now',
       rateUs: 'Rate us',
       giveFeedback: 'Give feedback',
@@ -45,13 +45,13 @@ const translations: Record<AvailableLanguage, Translations> = {
   },
   de: {
     app: {
-      title: 'Assist AR',
+      title: 'Pii AR',
       ready: 'Bereit zum Verbinden (sichere Verbindung)',
       lightRequired: 'Mehr Licht erforderlich',
     },
     buttons: {
-      scanQR: 'QR-Code scannen',
-      createTutorial: 'Video Tutorial erstellen',
+      scanQR: 'QR-Code erfassen',
+      createTutorial: 'Erstellen Sie eine Videoanleitung',
       startNow: 'Jetzt loslegen',
       rateUs: 'Bewerten Sie uns',
       giveFeedback: 'Feedback geben',
@@ -72,8 +72,8 @@ const translations: Record<AvailableLanguage, Translations> = {
       licenseAgreement: 'Endbenutzer-Lizenzvereinbarung',
       privacyPolicy: 'Datenschutzrichtlinie',
       thirdPartyLicenses: 'Urheberrechte Dritter',
-      version: 'TeamViewer Version',
-      id: 'TeamViewer ID',
+      version: 'Pii AR Version',
+      id: 'Pii AR ID',
     },
   },
 };

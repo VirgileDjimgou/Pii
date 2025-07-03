@@ -115,7 +115,7 @@ const setActiveTool = (tool: string) => {
 }
 
 .toolbar-button.active {
-  background-color: #3b82f6;
+  background-color: #be4df3;
   color: white;
 }
 </style>
