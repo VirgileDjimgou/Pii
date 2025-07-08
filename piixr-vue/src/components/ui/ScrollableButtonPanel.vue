@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 // Define the button interface to ensure type safety
 interface ActionButton {
@@ -17,8 +17,9 @@ const props = defineProps<{
 // Emit events for button interactions
 const emit = defineEmits(['button-click', 'button-hover']);
 
-// Track active/focused button
+// Track active/focused button and scroll container reference
 const activeButtonId = ref('');
+const scrollContainer = ref<HTMLElement | null>(null);
 
 // Handle button click
 const handleButtonClick = (button: ActionButton) => {
@@ -31,7 +32,73 @@ const handleButtonHover = (button: ActionButton) => {
   emit('button-hover', button);
 };
 
-// Handle horizontal scroll with keyboard
+// Scroll left functionality for the arrow button
+const scrollLeft = () => {
+  if (scrollContainer.value) {
+    const scrollAmount = 200; // Pixels to scroll
+    scrollContainer.value.scrollBy({
+      left: -scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+};
+
+// Scroll right functionality for the arrow button
+const scrollRight = () => {
+  if (scrollContainer.value) {
+    const scrollAmount = 200; // Pixels to scroll
+    scrollContainer.value.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+};
+
+// Handle mouse wheel scrolling on the container
+const handleWheelScroll = (event: WheelEvent) => {
+  if (scrollContainer.value) {
+    event.preventDefault();
+    // Convert vertical scroll to horizontal scroll
+    const scrollAmount = event.deltaY > 0 ? 100 : -100;
+    scrollContainer.value.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+};
+
+// Function to get the correct icon SVG paths based on icon name
+const getIconSVG = (iconName: string) => {
+  const icons: { [key: string]: string } = {
+    'qr-icon': `<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01M7 12h10"></path>`,
+    'connect-icon': `<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>`,
+    'direct-icon': `<path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>`,
+    'settings-icon': `<circle cx="12" cy="12" r="3"></circle>
+                      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>`,
+    'video-icon': `<polygon points="23 7 16 12 23 17 23 7"></polygon>
+                   <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>`,
+    'history-icon': `<circle cx="12" cy="12" r="10"></circle>
+                     <polyline points="12 6 12 12 16 14"></polyline>`,
+    'file-icon': `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="12" y1="18" x2="12" y2="12"></line>
+                  <line x1="9" y1="15" x2="15" y2="15"></line>`,
+    'calendar-icon': `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>`,
+    'help-icon': `<circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>`
+  };
+  
+  return icons[iconName] || '';
+};
+
+// Handle horizontal scroll with keyboard navigation
 const handleKeydown = (event: KeyboardEvent) => {
   if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
     event.preventDefault();
@@ -49,14 +116,14 @@ const handleKeydown = (event: KeyboardEvent) => {
     // Set the new active button
     activeButtonId.value = props.buttons[newIndex].id;
     
-    // Scroll the button into view
+    // Scroll the button into view smoothly
     const buttonElement = document.getElementById(`button-${props.buttons[newIndex].id}`);
     buttonElement?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     
-    // Emit the hover event
+    // Emit the hover event to update the parent component
     emit('button-hover', props.buttons[newIndex]);
   } else if (event.key === 'Enter' || event.key === ' ') {
-    // Find the current active button
+    // Handle selection with Enter or Space key
     const activeButton = props.buttons.find(btn => btn.id === activeButtonId.value);
     if (activeButton) {
       handleButtonClick(activeButton);
@@ -64,25 +131,41 @@ const handleKeydown = (event: KeyboardEvent) => {
   }
 };
 
-// Set the first button as active by default
+// Set up component when mounted
 onMounted(() => {
+  // Set the first button as active by default
   if (props.buttons.length > 0) {
     activeButtonId.value = props.buttons[0].id;
   }
   
-  // Add keyboard listener
+  // Add event listeners for keyboard navigation
   document.addEventListener('keydown', handleKeydown);
+  
+  // Add wheel event listener to the scroll container after it's mounted
+  setTimeout(() => {
+    if (scrollContainer.value) {
+      scrollContainer.value.addEventListener('wheel', handleWheelScroll, { passive: false });
+    }
+  }, 0);
 });
 
-// Clean up
-const onBeforeUnmount = () => {
+// Clean up event listeners when component is unmounted
+onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleKeydown);
-};
+  if (scrollContainer.value) {
+    scrollContainer.value.removeEventListener('wheel', handleWheelScroll);
+  }
+});
 </script>
 
 <template>
   <div class="scrollable-button-panel">
-    <div class="scrollable-container" tabindex="0">
+    <div 
+      ref="scrollContainer"
+      class="scrollable-container" 
+      tabindex="0"
+      @wheel="handleWheelScroll"
+    >
       <div class="buttons-row">
         <div 
           v-for="button in buttons" 
@@ -96,10 +179,17 @@ const onBeforeUnmount = () => {
         >
           <div class="square-button">
             <div class="icon">
-              <!-- Use the icon class names provided in the button data -->
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" :class="button.icon">
-                <!-- Icon paths will be applied via CSS classes -->
-              </svg>
+              <!-- Display the actual SVG icon using the getIconSVG function -->
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"
+                v-html="getIconSVG(button.icon)"
+              ></svg>
             </div>
             <div class="label">{{ button.label }}</div>
           </div>
@@ -107,18 +197,28 @@ const onBeforeUnmount = () => {
       </div>
     </div>
     
-    <!-- Visual cue for scrollability -->
-    <div class="scroll-indicator">
-      <div class="indicator left">
+    <!-- Functional arrow buttons for scrolling -->
+    <div class="scroll-controls">
+      <button 
+        class="scroll-arrow left" 
+        @click="scrollLeft"
+        aria-label="Scroll left"
+        :disabled="false"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
-      </div>
-      <div class="indicator right">
+      </button>
+      <button 
+        class="scroll-arrow right" 
+        @click="scrollRight"
+        aria-label="Scroll right"
+        :disabled="false"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -138,6 +238,7 @@ const onBeforeUnmount = () => {
   scrollbar-width: none; /* Hide scrollbar for Firefox */
   -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
   padding: 0.5rem 0;
+  scroll-behavior: smooth; /* Smooth scrolling behavior */
 }
 
 /* Hide scrollbar for Chrome/Safari */
@@ -148,16 +249,7 @@ const onBeforeUnmount = () => {
 .buttons-row {
   display: flex;
   gap: 1rem;
-  padding: 0 1rem;
-  /* Add extra padding to allow seeing the edge of the next item */
-  padding-right: 3rem;
-}
-
-/* Import all SVG icon styles from the main application */
-.qr-icon, .video-icon, .settings-icon, .history-icon, 
-.file-icon, .calendar-icon, .help-icon, .connect-icon, .direct-icon {
-  width: 100%;
-  height: 100%;
+  padding: 0 3rem; /* Extra padding for scroll controls */
 }
 
 .button-container {
@@ -205,6 +297,11 @@ const onBeforeUnmount = () => {
   color: white;
 }
 
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
 .label {
   font-size: 0.8rem;
   text-align: center;
@@ -215,33 +312,54 @@ const onBeforeUnmount = () => {
   white-space: nowrap;
 }
 
-.scroll-indicator {
+/* Functional scroll controls positioned at the sides */
+.scroll-controls {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
   display: flex;
   justify-content: space-between;
+  pointer-events: none; /* Allow clicks to pass through the container */
+  z-index: 10;
 }
 
-.indicator {
-  width: 24px;
-  height: 24px;
-  background-color: rgba(0, 0, 0, 0.5);
+.scroll-arrow {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0.5;
-  margin: auto 0.5rem;
-  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  pointer-events: auto; /* Re-enable clicks for the buttons */
+  backdrop-filter: blur(10px);
 }
 
-.indicator svg {
-  width: 16px;
-  height: 16px;
+.scroll-arrow:hover {
+  background-color: rgba(190, 77, 243, 0.8);
+  transform: scale(1.1);
+}
+
+.scroll-arrow:active {
+  transform: scale(0.95);
+}
+
+.scroll-arrow.left {
+  margin-left: 0.5rem;
+}
+
+.scroll-arrow.right {
+  margin-right: 0.5rem;
+}
+
+.scroll-arrow svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* Responsive adjustments */
@@ -258,6 +376,16 @@ const onBeforeUnmount = () => {
   
   .label {
     font-size: 0.7rem;
+  }
+  
+  .scroll-arrow {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .scroll-arrow svg {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>
