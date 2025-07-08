@@ -12,6 +12,7 @@
     "run:android": "npm run build:android && npx cap run android"
   },
   "dependencies": {
+    "@ar-js-org/ar.js": "^3.4.7",
     "@capacitor/android": "^7.4.1",
     "@capacitor/cli": "^7.4.1",
     "@capacitor/core": "^7.4.1",
@@ -19,6 +20,7 @@
     "@types/uuid": "^10.0.0",
     "@vueuse/core": "^13.5.0",
     "lottie-web": "^5.13.0",
+    "mind-ar": "^1.2.5",
     "mqtt": "^5.13.1",
     "pinia": "^3.0.3",
     "three": "^0.178.0",

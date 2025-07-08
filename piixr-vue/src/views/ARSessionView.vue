@@ -7,13 +7,17 @@ import { useAppStore } from '../stores/app';
 import { useLocalization } from '../composables/useLocalization';
 import AROverlayToolbar from '../components/ar/AROverlayToolbar.vue';
 import ARAnnotationOverlay from '../components/ar/ARAnnotationOverlay.vue';
+import AR3DAnnotationOverlay from '../components/ar/AR3DAnnotationOverlay.vue';
 import SessionFooter from '../components/ar/SessionFooter.vue';
 
 const router = useRouter();
-const { videoElement, initCamera, stopCamera, isStreaming, hasPermission, errorMessage } = useCameraFeed();
+const { videoElement, initCamera, stopCamera, isStreaming, errorMessage } = useCameraFeed();
 const { translate } = useLocalization();
 const appStore = useAppStore();
 const annotationTools = useAnnotation();
+
+// 3D AR overlay reference
+const ar3DOverlayRef = ref<InstanceType<typeof AR3DAnnotationOverlay> | null>(null);
 
 const showLightWarning = ref(true); // Show light warning for demo purposes
 
@@ -46,7 +50,13 @@ const dismissLightWarning = () => {
   showLightWarning.value = false;
 };
 
-// Camera container click handler
+// Toggle 3D mode
+const toggle3DMode = () => {
+  annotationTools.enable3D.value = !annotationTools.enable3D.value;
+  if (annotationTools.enable3D.value && ar3DOverlayRef.value) {
+    annotationTools.setAR3DSystem(ar3DOverlayRef.value);
+  }
+};
 const handleContainerClick = (e: MouseEvent) => {
   if (annotationTools.isDrawing.value) {
     // If we're drawing, update the annotation
@@ -106,6 +116,11 @@ onMounted(() => {
   setTimeout(() => {
     showLightWarning.value = false;
   }, 5000);
+  
+  // Set up 3D AR system connection
+  if (ar3DOverlayRef.value) {
+    annotationTools.setAR3DSystem(ar3DOverlayRef.value);
+  }
   
   // Add event listener for browser tab close/refresh to stop camera
   // This ensures camera is stopped even if user closes tab or refreshes page
@@ -243,6 +258,20 @@ onUnmounted(() => {
             <div class="dot-grid animated"></div>
           </div>
           <p class="warning-text">{{ translate('app.lightRequired') }}</p>
+          <button @click="dismissLightWarning" class="dismiss-warning-btn">
+            Got it
+          </button>
+        </div>
+      </div>
+
+      <!-- 3D Mode Info Banner -->
+      <div v-if="annotationTools.enable3D.value" class="ar-3d-info-banner">
+        <div class="info-content">
+          <div class="info-icon">🎯</div>
+          <div class="info-text">
+            <h4>3D Annotation Mode</h4>
+            <p>Annotations are now anchored in 3D space and will remain fixed even when you move the camera</p>
+          </div>
         </div>
       </div>
 
@@ -251,11 +280,21 @@ onUnmounted(() => {
         :annotations="annotationTools.annotations"
         :activeAnnotation="annotationTools.activeAnnotation.value"
       />
+      
+      <!-- 3D Annotation Overlay -->
+      <AR3DAnnotationOverlay 
+        ref="ar3DOverlayRef"
+        :annotations="annotationTools.annotations"
+        :activeAnnotation="annotationTools.activeAnnotation.value"
+        :enable3D="annotationTools.enable3D.value"
+      />
 
       <!-- Right Side Toolbar -->
       <AROverlayToolbar 
         :currentTool="annotationTools.currentTool.value"
+        :enable3D="annotationTools.enable3D.value"
         @set-tool="(tool) => annotationTools.currentTool.value = tool"
+        @toggle-3d="toggle3DMode"
         @undo="annotationTools.undoLastAnnotation"
         @clear="annotationTools.clearAnnotations"
       />
@@ -674,5 +713,78 @@ onUnmounted(() => {
   50% { 
     text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
   }
+}
+
+/* 3D Mode Info Banner */
+.ar-3d-info-banner {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 122, 255, 0.9);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 122, 255, 0.3);
+  z-index: 20;
+  backdrop-filter: blur(10px);
+  animation: slideInFromTop 0.5s ease-out;
+}
+
+@keyframes slideInFromTop {
+  0% {
+    transform: translateX(-50%) translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.info-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.info-icon {
+  font-size: 24px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.info-text h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.info-text p {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.dismiss-warning-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+}
+
+.dismiss-warning-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 </style>

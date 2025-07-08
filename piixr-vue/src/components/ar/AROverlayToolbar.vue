@@ -3,10 +3,12 @@ import { ref, watch } from 'vue';
 
 const props = defineProps<{
   currentTool: 'arrow' | 'circle' | 'rectangle' | 'freehand' | 'text';
+  enable3D?: boolean;
 }>();
 
 defineEmits<{
   (e: 'setTool', tool: 'arrow' | 'circle' | 'rectangle' | 'freehand' | 'text'): void;
+  (e: 'toggle3d'): void;
   (e: 'undo'): void;
   (e: 'clear'): void;
 }>();
@@ -70,6 +72,18 @@ const setActiveTool = (tool: string) => {
       @click="() => { $emit('setTool', 'text'); setActiveTool('text'); }"
       title="Text">
       <div class="simple-icon">T</div>
+    </button>
+    
+    <!-- Divider -->
+    <div class="toolbar-divider"></div>
+    
+    <!-- 3D Mode Toggle -->
+    <button 
+      class="toolbar-button mode-toggle" 
+      :class="{ active: enable3D }"
+      @click="() => { $emit('toggle3d'); }"
+      title="Toggle 3D Mode">
+      <div class="simple-icon">{{ enable3D ? '🎯' : '📐' }}</div>
     </button>
     
     <!-- Divider -->
@@ -253,6 +267,56 @@ const setActiveTool = (tool: string) => {
     ),
     rgba(0, 0, 0, 0.7);
   border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 3D mode toggle button */
+.toolbar-button.mode-toggle {
+  background: 
+    linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(255, 255, 255, 0.15) 100%
+    ),
+    rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.2);
+  position: relative;
+}
+
+.toolbar-button.mode-toggle.active {
+  background: linear-gradient(135deg, #007AFF, #0056b3);
+  border-color: #007AFF;
+  color: white;
+  box-shadow: 
+    0 4px 16px rgba(0, 122, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.toolbar-button.mode-toggle.active::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #007AFF, #0056b3);
+  border-radius: 10px;
+  z-index: -1;
+  opacity: 0.3;
+  animation: pulse-3d 2s ease-in-out infinite;
+}
+
+@keyframes pulse-3d {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+.toolbar-button.mode-toggle:hover {
+  background: 
+    linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(255, 255, 255, 0.25) 100%
+    ),
+    rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 /* Visual divider between tool and action buttons */
