@@ -224,14 +224,25 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- Light Warning -->
+      <!-- Light Warning with Dynamic Animation -->
       <div v-if="showLightWarning" class="light-warning">
         <div class="light-warning-content">
           <div class="light-warning-icon">
-            <div class="phone-outline"></div>
-            <div class="dot-grid"></div>
+            <!-- Animated spotlight that moves across the scene -->
+            <div class="spotlight-beam"></div>
+            <!-- Pulsing ambient glow that breathes with the warning -->
+            <div class="ambient-glow"></div>
+            <!-- Moving light particles that orbit around the phone -->
+            <div class="light-particles">
+              <div class="particle" v-for="i in 6" :key="`particle-${i}`" 
+                :style="{ '--particle-delay': `${i * 0.5}s` }"></div>
+            </div>
+            <!-- Enhanced phone outline with subtle glow -->
+            <div class="phone-outline enhanced"></div>
+            <!-- Animated dot grid that pulses with light intensity -->
+            <div class="dot-grid animated"></div>
           </div>
-          <p>{{ translate('app.lightRequired') }}</p>
+          <p class="warning-text">{{ translate('app.lightRequired') }}</p>
         </div>
       </div>
 
@@ -436,6 +447,13 @@ onUnmounted(() => {
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.7);
   pointer-events: none;
+  /* Subtle background animation that breathes with the warning */
+  animation: backgroundPulse 4s ease-in-out infinite;
+}
+
+@keyframes backgroundPulse {
+  0%, 100% { background-color: rgba(0, 0, 0, 0.7); }
+  50% { background-color: rgba(0, 0, 0, 0.8); }
 }
 
 .light-warning-content {
@@ -445,6 +463,13 @@ onUnmounted(() => {
   justify-content: center;
   gap: 1rem;
   padding: 2rem;
+  /* Content gently floats up and down */
+  animation: floatContent 3s ease-in-out infinite;
+}
+
+@keyframes floatContent {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
 }
 
 .light-warning-icon {
@@ -454,6 +479,114 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Icon container has subtle rotation to create depth */
+  animation: iconSway 6s ease-in-out infinite;
+}
+
+@keyframes iconSway {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(1deg) scale(1.02); }
+  75% { transform: rotate(-1deg) scale(0.98); }
+}
+
+/* Animated spotlight that sweeps across the scene */
+.spotlight-beam {
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.1) 30deg,
+    rgba(255, 255, 255, 0.2) 60deg,
+    rgba(255, 255, 255, 0.1) 90deg,
+    transparent 120deg,
+    transparent 360deg
+  );
+  border-radius: 50%;
+  animation: spotlightRotate 8s linear infinite;
+  z-index: 1;
+}
+
+@keyframes spotlightRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Pulsing ambient glow that creates atmospheric lighting */
+.ambient-glow {
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  right: -30px;
+  bottom: -30px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    rgba(255, 255, 255, 0.03) 60%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  animation: ambientPulse 3s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes ambientPulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 0.6;
+  }
+  50% { 
+    transform: scale(1.2); 
+    opacity: 1;
+  }
+}
+
+/* Light particles that orbit around the phone */
+.light-particles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  /* Each particle orbits at a different speed and radius */
+  animation: orbitParticle 4s linear infinite;
+  animation-delay: var(--particle-delay, 0s);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+.particle:nth-child(odd) {
+  animation-duration: 3s;
+  animation-direction: reverse;
+}
+
+.particle:nth-child(3n) {
+  animation-duration: 5s;
+  transform: translate(-50%, -50%) scale(0.7);
+}
+
+@keyframes orbitParticle {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg) translateX(40px) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg) translateX(40px) rotate(-360deg);
+  }
 }
 
 .phone-outline {
@@ -461,6 +594,31 @@ onUnmounted(() => {
   height: 120px;
   border: 2px solid white;
   border-radius: 10px;
+  position: relative;
+  z-index: 3;
+  transition: all 0.3s ease;
+}
+
+/* Enhanced phone outline with dynamic glow */
+.phone-outline.enhanced {
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.3),
+    inset 0 0 10px rgba(255, 255, 255, 0.1);
+  animation: phonePulse 2s ease-in-out infinite;
+}
+
+@keyframes phonePulse {
+  0%, 100% { 
+    box-shadow: 
+      0 0 10px rgba(255, 255, 255, 0.3),
+      inset 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+  50% { 
+    box-shadow: 
+      0 0 20px rgba(255, 255, 255, 0.5),
+      inset 0 0 15px rgba(255, 255, 255, 0.2);
+  }
 }
 
 .dot-grid {
@@ -472,6 +630,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 
 .dot-grid::before {
@@ -482,5 +641,38 @@ onUnmounted(() => {
   background-image: radial-gradient(circle, white 2px, transparent 2px);
   background-size: 15px 15px;
   opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+/* Animated dot grid that responds to light changes */
+.dot-grid.animated::before {
+  animation: dotGridPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes dotGridPulse {
+  0%, 100% { 
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Enhanced warning text with subtle glow */
+.warning-text {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  animation: textGlow 3s ease-in-out infinite;
+}
+
+@keyframes textGlow {
+  0%, 100% { 
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+  50% { 
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  }
 }
 </style>

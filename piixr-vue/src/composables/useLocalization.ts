@@ -14,7 +14,7 @@ const translations: Record<AvailableLanguage, Translations> = {
     app: {
       title: 'Pii AR',
       ready: 'Ready to connect (secure connection)',
-      lightRequired: 'More light required',
+      lightRequired: 'Additional lighting needed',
     },
     buttons: {
       scanQR: 'Scan QR Code',
@@ -54,7 +54,7 @@ const translations: Record<AvailableLanguage, Translations> = {
     app: {
       title: 'Pii AR',
       ready: 'Bereit zum Verbinden (sichere Verbindung)',
-      lightRequired: 'Mehr Licht erforderlich',
+      lightRequired: 'Mehr Helligkeit notwendig',
     },
     buttons: {
       scanQR: 'QR-Code erfassen',
