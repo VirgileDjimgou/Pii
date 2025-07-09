@@ -93,22 +93,8 @@ const directConnect = () => {
   // In a real app, this would prompt for a session ID to connect to
 };
 
-// WebRTC video call functionality
-const startWebRtcCall = () => {
-  console.log('Starting WebRTC video call...');
-  // In a real app, this would navigate to a WebRTC session view
-  // For now, we'll just log it as the component is ready for integration
-  // router.push('/webrtc-session');
-};
-
 // Define all button data for the quick access panel
 const quickAccessButtons = ref<Button[]>([
-  {
-    id: 'webrtc-call',
-    label: 'Video Call',
-    icon: 'video-call-icon',
-    action: startWebRtcCall
-  },
   {
     id: 'scan-qr',
     label: 'Scan QR',
@@ -125,6 +111,12 @@ const quickAccessButtons = ref<Button[]>([
     id: 'direct-connect',
     label: 'Direct Connect',
     icon: 'direct-icon',
+    action: directConnect
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    icon: 'settings-icon',
     action: openSettings
   },
   {
@@ -528,7 +520,7 @@ onMounted(() => {
   color: white;
 }
 
-.qr-icon, .video-icon, .settings-icon, .history-icon, .file-icon, .calendar-icon, .help-icon, .connect-icon, .direct-icon, .video-call-icon {
+.qr-icon, .video-icon, .settings-icon, .history-icon, .file-icon, .calendar-icon, .help-icon, .connect-icon, .direct-icon {
   width: 20px;
   height: 20px;
 }
